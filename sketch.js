@@ -11,8 +11,11 @@ let board;
 let Circles = [];
 let fallingSnow = [];
 let NotFallingSnow = [];
+let resetButton;
+
 
 function setup() {
+
   createCanvas(w, h);
   for (i = 1; i < 91; i++) {
     append(all_numbers, i)
@@ -24,7 +27,6 @@ function setup() {
 
   numbers = findNumbers();
   board = placeNumbers(numbers);
-
   CreateCircles(board)
   // Create snowflakes
   for (i = 0; i < 100; i++) {
@@ -35,8 +37,9 @@ function setup() {
 
 
 function draw() {
-   // Print title
+  // Print title
   background(0, 90, 90);
+
   // display and update falling snow
   for (var i = fallingSnow.length - 1; i >= 0; i--) {
     fallingSnow[i].update();
@@ -48,7 +51,7 @@ function draw() {
       fallingSnow.push(new flake())
     }
   }
-  
+
   // Display and update not falling snow
   for (var j = 0; j < NotFallingSnow.length; j++) {
 
@@ -61,10 +64,14 @@ function draw() {
     }
   }
 
+
+
   printTitle(random_seed)
   for (circ = 0; circ < Circles.length; circ++) {
     Circles[circ].display()
   }
+
+  resetButten.display();
 }
 
 function findNumbers() {
@@ -146,7 +153,9 @@ function placeNumbers(numbers) {
       // Pick a tuple
 
       let tuple_count = 0
+      // Loop the through the tuples in random order
       while (work_arr.length > 0) {
+
         // Pick a tuple
         let num_pkd = random(work_arr)
         // Find index of picked tuble
@@ -206,7 +215,7 @@ function placeNumbers(numbers) {
 
             // Remove high_low from pospos
             pospos.splice(pospos.indexOf(high_low), 1);
-            // Reduce dimensionality 
+            // Reduce dimensionality
             pospos = pospos[0];
 
             // Remove first_pos from pospos
@@ -242,7 +251,7 @@ function placeNumbers(numbers) {
           // Set board value
           board[idx_board][pos] = num_pkd[0];
 
-          // Advance counters 
+          // Advance counters
           tuple_count++
           row_count[pos]++
 
@@ -256,22 +265,36 @@ function placeNumbers(numbers) {
 }
 
 function mousePressed() {
+  let size = Circles[0].size
   for (i = 0; i < Circles.length; i++) {
     Circles[i].clicked(mouseX, mouseY);
+  }
+
+
+  if (resetButten.clicked(mouseX, mouseY)) {
+    for (i = 0; i < Circles.length; i++) {
+      Circles[i].on = false;
+    }
   }
 }
 
 function CreateCircles(board) {
 
-  let offset = (h + w) * 0.05;
 
-  let x_center = w / 2;
-  let y_center = h / 2;
+  let center_x = windowWidth * 0.5;
+  let center_y = windowHeight * 0.5;
 
-  let y_start = y_center - offset;
+  let w_prime = center_x * (4 / 5);
+  let h_prime = center_y * (1 / 3);
+
+  let xoff = 2 * w_prime / 9;
+  let yoff = 2 * h_prime / 3;
+
+  let offset = 1.15 * min(xoff, yoff);
+  let y_start = center_y - offset;
 
   for (i = 0; i < 3; i++) {
-    let x_start = x_center - 4 * offset;
+    let x_start = center_x - 4 * offset;
     for (j = 0; j < 9; j++) {
       thisCircle = new Circle(x_start, y_start, 0.5 * offset * 0.9, board[j][i])
       Circles.push(thisCircle)
@@ -279,27 +302,44 @@ function CreateCircles(board) {
     }
     y_start += offset;
   }
+
+  resetButten = new button(w * 0.02, h - 0.9 * offset, 2 * offset, 'Ryd pladen?')
 }
 
 function windowResized() {
-  let w1 = w;
-  let h1 = h;
+  // Set global height and width
+  h = windowHeight;
+  w = windowWidth;
+
   resizeCanvas(windowWidth, windowHeight);
-  w = window.innerWidth;
-  h = window.innerHeight;
+  let center_x = windowWidth * 0.5;
+  let center_y = windowHeight * 0.5;
 
-  // Update circle size and position
-  let offset = (h + w) * 0.05;
+  let w_prime = center_x * (4 / 5);
+  let h_prime = center_y * (1 / 3);
 
-  let x_center = w / 2;
-  let y_center = h / 2;
+  let xoff = 2 * w_prime / 9;
+  let yoff = 2 * h_prime / 3;
 
-  for (circ = 0; circ < Circles.length; circ++) {
-    let old_size = Circles[circ].size
-    Circles[circ].size = 0.5 * offset * 0.9;
-    Circles[circ].x = (w * Circles[circ].x / w1) * ((0.5 * offset * 0.9) / old_size);
-    Circles[circ].y = (h * Circles[circ].y / h1) * ((0.5 * offset * 0.9) / old_size);
+  let offset = 1.15 * min(xoff, yoff);
+  let y_start = center_y - offset;
+
+  for (i = 0; i < 3; i++) {
+    let x_start = center_x - 4 * offset;
+    for (j = 0; j < 9; j++) {
+      let index = i * 9 + j;
+      Circles[index].x = x_start;
+      Circles[index].y = y_start;
+      Circles[index].size = 0.5 * offset * 0.9;
+
+      x_start += offset;
+    }
+    y_start += offset;
   }
+
+  resetButten.x = w * 0.02;
+  resetButten.y = h - 0.9 * offset;
+  resetButten.size = 2 * offset;
 }
 
 function printTitle(sed) {
