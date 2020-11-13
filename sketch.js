@@ -11,7 +11,7 @@ let board;
 let Circles = [];
 let fallingSnow = [];
 let NotFallingSnow = [];
-let resetButton;
+//let resetButton;
 
 
 function setup() {
@@ -71,7 +71,7 @@ function draw() {
     Circles[circ].display()
   }
 
-  resetButten.display();
+  //resetButten.display();
 }
 
 function findNumbers() {
@@ -271,11 +271,11 @@ function mousePressed() {
   }
 
 
-  if (resetButten.clicked(mouseX, mouseY)) {
-    for (i = 0; i < Circles.length; i++) {
-      Circles[i].on = false;
-    }
-  }
+  //if (resetButten.clicked(mouseX, mouseY)) {
+  //  for (i = 0; i < Circles.length; i++) {
+  //    Circles[i].on = false;
+  //  }
+  //}
 }
 
 function CreateCircles(board) {
@@ -303,7 +303,7 @@ function CreateCircles(board) {
     y_start += offset;
   }
 
-  resetButten = new button(w * 0.02, h - 0.9 * offset, 2 * offset, 'Ryd pladen?')
+  //resetButten = new button(w * 0.02, h - 0.9 * offset, 2 * offset, 'Ryd pladen?')
 }
 
 function windowResized() {
@@ -337,9 +337,9 @@ function windowResized() {
     y_start += offset;
   }
 
-  resetButten.x = w * 0.02;
-  resetButten.y = h - 0.9 * offset;
-  resetButten.size = 2 * offset;
+  //resetButten.x = w * 0.02;
+  //resetButten.y = h - 0.9 * offset;
+  //resetButten.size = 2 * offset;
 }
 
 function printTitle(sed) {
