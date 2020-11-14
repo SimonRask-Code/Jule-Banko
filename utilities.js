@@ -1,7 +1,3 @@
-
-
-
-
 class Circle {
   constructor(x, y, size, value) {
     this.x = x;
@@ -125,7 +121,12 @@ class clearBoardButton {
   }
 
   clicked(x, y, board) {
-    if (dist(x, y, this.x, this.y) < this.size && this.value != 0) {
+    if (
+      x < this.x + this.size &&
+      x > this.x &&
+      y < this.y + this.size / 3 &&
+      y > this.y
+    ) {
       this.on = !this.on;
       // reset board
       for (i = 0; i < board.Circles.length; i++) {
@@ -225,7 +226,12 @@ class newBoardButton {
   }
 
   clicked(x, y, board) {
-    if (dist(x, y, this.x, this.y) < this.size && this.value != 0) {
+    if (
+      x < this.x + this.size &&
+      x > this.x &&
+      y < this.y + this.size / 3 &&
+      y > this.y
+    ) {
       this.on = !this.on;
       board.seed++;
       board.numbers = findNumbers(board.seed);
@@ -539,22 +545,32 @@ function printTitle() {
   let h = windowHeight;
   let w = windowWidth;
 
-  textSize(h * 0.15);
+  let center_x = w * 0.5;
+  let center_y = h * 0.5;
+
+  let w_prime = center_x * (4 / 5);
+  let h_prime = center_y * (1 / 3);
+
+  let xoff = 2 * w_prime / 9;
+  let yoff = 2 * h_prime / 3;
+
+  let offset = 1.15 * min(xoff, yoff);
+
+  textSize(2 * offset);
   textFont("Tangerine")
   // snow color
   fill(255);
   textAlign(CENTER, CENTER);
-  text(title, w / 2, h * (0.1));
+  text(title, w / 2, 1.25 * offset);
 
-  textSize(h * 0.15);
+  textSize(2 * offset);
   textFont("Tangerine")
 
   fill(LightText);
   textAlign(CENTER, CENTER);
-  text(title, w / 2 - 1.2, h * (0.1) - 1.2);
+  text(title, w / 2 - 1.2, 1.25 * offset - 1.2);
 
   textFont("Roboto Condensed")
-  // Print the seed
   textSize(h * 0.018);
   text('Made by: Simon Rask', w / 2, h * (1 - 0.05));
   textAlign(CENTER, CENTER);
