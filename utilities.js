@@ -556,14 +556,14 @@ function printTitle() {
 
   let offset = 1.15 * min(xoff, yoff);
 
-  textSize(1.7 * offset);
+  textSize(1.2 * offset);
   textFont("Tangerine")
   // snow color
   fill(255);
   textAlign(CENTER, CENTER);
   text(title, w / 2, 1.25 * offset);
 
-  textSize(1.7 * offset);
+  textSize(1.2 * offset);
   textFont("Tangerine")
 
   fill(LightText);
