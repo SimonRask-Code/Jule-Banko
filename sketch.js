@@ -1,4 +1,4 @@
-let title = 'Widex Nordic Jule Banko!';
+let title = 'Jule Banko!';
 
 let w = window.innerWidth;
 let h = window.innerHeight;
